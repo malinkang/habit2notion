@@ -18,13 +18,17 @@ from habit2notion.config import (
     TITLE,
     SELECT,
     MULTI_SELECT,
-    TZ
+    TZ,
 )
 import pendulum
 
 MAX_LENGTH = (
     1024  # NOTION 2000个字符限制https://developers.notion.com/reference/request-limits
 )
+
+
+def get_embed():
+    return {"type": "embed", "embed": {"url": "https://heatmap.malinkang.com/"}}
 
 
 def get_heading(level, content):
@@ -117,7 +121,6 @@ def get_quote(content):
     }
 
 
-
 def get_rich_text_from_result(result, name):
     return result.get("properties").get(name).get("rich_text")[0].get("plain_text")
 
@@ -177,7 +180,7 @@ def get_first_and_last_day_of_week(date):
     )
 
     # 获取给定日期所在周的最后一天（星期日）
-    last_day_of_week = first_day_of_week + timedelta(days=7) 
+    last_day_of_week = first_day_of_week + timedelta(days=7)
 
     return first_day_of_week, last_day_of_week
 
@@ -191,22 +194,22 @@ def get_properties(dict1, dict2):
         property = None
         if type == TITLE:
             property = {
-                "title": [
-                    {"type": "text", "text": {"content": value[:MAX_LENGTH]}}
-                ]
+                "title": [{"type": "text", "text": {"content": value[:MAX_LENGTH]}}]
             }
         elif type == RICH_TEXT:
             property = {
-                "rich_text": [
-                    {"type": "text", "text": {"content": value[:MAX_LENGTH]}}
-                ]
+                "rich_text": [{"type": "text", "text": {"content": value[:MAX_LENGTH]}}]
             }
         elif type == NUMBER:
             property = {"number": value}
         elif type == STATUS:
             property = {"status": {"name": value}}
         elif type == FILES:
-            property = {"files": [{"type": "external", "name": "Cover", "external": {"url": value}}]}
+            property = {
+                "files": [
+                    {"type": "external", "name": "Cover", "external": {"url": value}}
+                ]
+            }
         elif type == DATE:
             property = {
                 "date": {
@@ -216,11 +219,11 @@ def get_properties(dict1, dict2):
                     "time_zone": "Asia/Shanghai",
                 }
             }
-        elif type==URL:
-            property = {"url": value}        
-        elif type==SELECT:
-            property = {"select": {"name": value}}        
-        elif type==MULTI_SELECT:
+        elif type == URL:
+            property = {"url": value}
+        elif type == SELECT:
+            property = {"select": {"name": value}}
+        elif type == MULTI_SELECT:
             property = {"multi_select": [{"name": name} for name in value]}
         elif type == RELATION:
             property = {"relation": [{"id": id} for id in value]}
@@ -236,7 +239,7 @@ def get_property_value(property):
     if content is None:
         return None
     if type == "title" or type == "rich_text":
-        if(len(content)>0):
+        if len(content) > 0:
             return content[0].get("plain_text")
         else:
             return None
@@ -250,6 +253,13 @@ def get_property_value(property):
             return None
     elif type == "date":
         return str_to_timestamp(content.get("start"))
+    elif type == "rollup":
+        rollup_type= content.get("type")
+        if rollup_type == "array" and content.get(rollup_type): 
+            first = content.get(rollup_type)[0]
+            return first.get(first.get("type"))
+
+        
     else:
         return content
 
@@ -279,6 +289,7 @@ def calculate_book_str_id(book_id):
     result += md5.hexdigest()[0:3]
     return result
 
+
 def transform_id(book_id):
     id_length = len(book_id)
     if re.match("^\d*$", book_id):
@@ -292,8 +303,10 @@ def transform_id(book_id):
         result += format(ord(book_id[i]), "x")
     return "4", [result]
 
+
 def get_weread_url(book_id):
     return f"https://weread.qq.com/web/reader/{calculate_book_str_id(book_id)}"
+
 
 def str_to_timestamp(date):
     if date == None:
@@ -302,28 +315,26 @@ def str_to_timestamp(date):
     # 获取时间戳
     return int(dt.timestamp())
 
-upload_url = 'https://wereadassets.malinkang.com/'
+
+upload_url = "https://wereadassets.malinkang.com/"
 
 
-def upload_image(folder_path, filename,file_path):
+def upload_image(folder_path, filename, file_path):
     # 将文件内容编码为Base64
-    with open(file_path, 'rb') as file:
-        content_base64 = base64.b64encode(file.read()).decode('utf-8')
+    with open(file_path, "rb") as file:
+        content_base64 = base64.b64encode(file.read()).decode("utf-8")
 
     # 构建请求的JSON数据
-    data = {
-        'file': content_base64,
-        'filename': filename,
-        'folder': folder_path
-    }
+    data = {"file": content_base64, "filename": filename, "folder": folder_path}
 
     response = requests.post(upload_url, json=data)
 
     if response.status_code == 200:
-        print('File uploaded successfully.')
+        print("File uploaded successfully.")
         return response.text
     else:
         return None
+
 
 def url_to_md5(url):
     # 创建一个md5哈希对象
@@ -331,7 +342,7 @@ def url_to_md5(url):
 
     # 对URL进行编码，准备进行哈希处理
     # 默认使用utf-8编码
-    encoded_url = url.encode('utf-8')
+    encoded_url = url.encode("utf-8")
 
     # 更新哈希对象的状态
     md5_hash.update(encoded_url)
@@ -340,6 +351,7 @@ def url_to_md5(url):
     hex_digest = md5_hash.hexdigest()
 
     return hex_digest
+
 
 def download_image(url, save_dir="cover"):
     # 确保目录存在，如果不存在则创建
@@ -364,20 +376,22 @@ def download_image(url, save_dir="cover"):
         print(f"Failed to download image. Status code: {response.status_code}")
     return save_path
 
+
 def upload_cover(url):
     cover_file = download_image(url)
-    return upload_image("cover",f"{cover_file.split('/')[-1]}",cover_file)
+    return upload_image("cover", f"{cover_file.split('/')[-1]}", cover_file)
+
 
 def parse_date(date_str):
-        # get_task()
-    return pendulum.parse(date_str).int_timestamp
+    return (pendulum.parse(date_str)-timedelta(hours=8)).int_timestamp
+
 
 def split_emoji_from_string(s):
     # 检查第一个字符是否是emoji
-    l = list(filter(lambda x: x.get("match_start")==0,emoji.emoji_list(s)))
-    if len(l)>0:
+    l = list(filter(lambda x: x.get("match_start") == 0, emoji.emoji_list(s)))
+    if len(l) > 0:
         # 如果整个字符串都是emoji
-        return l[0].get("emoji"), s[l[0].get("match_end"):]
+        return l[0].get("emoji"), s[l[0].get("match_end") :]
     else:
         # 如果字符串不是以emoji开头
-        return '✅', s
+        return "✅", s

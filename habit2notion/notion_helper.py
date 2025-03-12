@@ -112,13 +112,6 @@ class NotionHelper:
                 self.database_id_dict[child.get("child_database").get("title")] = (
                     child.get("id")
                 )
-            elif child["type"] == "embed" and child.get("embed").get("url"):
-                url =  child.get("embed").get("url")
-                if url.startswith("https://heatmap.malinkang.com/"):
-                    if("/tomato/" in url):
-                        self.tomato_heatmap_block_id = child.get("id")
-                    else:
-                        self.todo_heatmap_block_id = child.get("id")
             # 如果子块有子块，递归调用函数
             if "has_children" in child and child["has_children"]:
                 self.search_database(child["id"])
@@ -197,8 +190,8 @@ class NotionHelper:
         return self.client.pages.update(page_id=page_id, properties=properties)
 
     @retry(stop_max_attempt_number=3, wait_fixed=5000)
-    def update_page(self, page_id, properties,icon):
-        return self.client.pages.update(page_id=page_id, properties=properties,icon=icon)
+    def update_page(self, page_id, properties):
+        return self.client.pages.update(page_id=page_id, properties=properties)
 
     @retry(stop_max_attempt_number=3, wait_fixed=5000)
     def create_page(self, parent, properties, icon):

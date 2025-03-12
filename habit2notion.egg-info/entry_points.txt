@@ -1,3 +1,0 @@
-[console_scripts]
-habit2notion = habit2notion.habit:main
-update_heatmap = habit2notion.update_heatmap:main

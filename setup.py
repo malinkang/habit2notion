@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="habit2notion",
-    version="0.0.3",
+    version="0.1.2",
     packages=find_packages(),
     install_requires=[
         "requests",
