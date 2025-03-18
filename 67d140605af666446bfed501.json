@@ -1,0 +1,71 @@
+[
+    {
+        "id": "67d7232da0d08507830dc03c",
+        "habitId": "67d140605af666446bfed501",
+        "checkinStamp": 20250316,
+        "checkinTime": "2025-03-16T19:14:53.000+0000",
+        "opTime": "2025-03-16T19:14:53.000+0000",
+        "value": 0.0,
+        "goal": 60.0,
+        "status": 0
+    },
+    {
+        "id": "67d874fa2590a60794497d14",
+        "habitId": "67d140605af666446bfed501",
+        "checkinStamp": 20250317,
+        "opTime": "2025-03-18T11:06:56.000+0000",
+        "value": 12.0,
+        "goal": 60.0,
+        "status": 0
+    },
+    {
+        "id": "67d9540b2d359a0db3d09d6e",
+        "habitId": "67d140605af666446bfed501",
+        "checkinStamp": 20250318,
+        "checkinTime": "2025-03-18T19:11:33.000+0000",
+        "opTime": "2025-03-18T19:11:33.000+0000",
+        "value": 40.0,
+        "goal": 60.0,
+        "status": 0
+    },
+    {
+        "id": "67d145193b77505b8635d022",
+        "habitId": "67d140605af666446bfed501",
+        "checkinStamp": 20250312,
+        "checkinTime": "2025-03-12T16:26:01.000+0000",
+        "opTime": "2025-03-12T16:26:01.000+0000",
+        "value": 20.0,
+        "goal": 60.0,
+        "status": 0
+    },
+    {
+        "id": "67d506a73b775005ceee6016",
+        "habitId": "67d140605af666446bfed501",
+        "checkinStamp": 20250313,
+        "checkinTime": "2025-03-15T12:48:39.000+0000",
+        "opTime": "2025-03-15T12:48:39.000+0000",
+        "value": 68.0,
+        "goal": 60.0,
+        "status": 2
+    },
+    {
+        "id": "67d506a63b775005ceee6015",
+        "habitId": "67d140605af666446bfed501",
+        "checkinStamp": 20250314,
+        "checkinTime": "2025-03-15T12:48:38.000+0000",
+        "opTime": "2025-03-15T12:48:38.000+0000",
+        "value": 0.0,
+        "goal": 60.0,
+        "status": 0
+    },
+    {
+        "id": "67d506a63b775005ceee6014",
+        "habitId": "67d140605af666446bfed501",
+        "checkinStamp": 20250315,
+        "checkinTime": "2025-03-15T12:48:38.000+0000",
+        "opTime": "2025-03-15T12:48:38.000+0000",
+        "value": 186.0,
+        "goal": 60.0,
+        "status": 2
+    }
+]
