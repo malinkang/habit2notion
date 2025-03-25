@@ -1,5 +1,15 @@
 [
     {
+        "id": "67e2a44cbf4f3707be649205",
+        "habitId": "67d141075af666446bfed539",
+        "checkinStamp": 20250324,
+        "checkinTime": "2025-03-25T12:40:44.000+0000",
+        "opTime": "2025-03-25T12:40:44.000+0000",
+        "value": 40.0,
+        "goal": 500.0,
+        "status": 0
+    },
+    {
         "id": "67dc41c2781f2d07af6b3460",
         "habitId": "67d141075af666446bfed539",
         "checkinStamp": 20250320,
